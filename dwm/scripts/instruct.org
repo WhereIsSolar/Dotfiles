@@ -1,0 +1,6 @@
+увеличить яркость
+echo (max250) | sudo tee /sys/class/backlight/amdgpu_bl1/brightness 
+
+Network manager - nmtui
+
+Bluetooth manager - blueman
