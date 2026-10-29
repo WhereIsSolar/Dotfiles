@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Запускаем Kitty с твоим меню
-kitty --title "Settings Menu" -e ~/dwm/scripts/settingsMenu.sh
