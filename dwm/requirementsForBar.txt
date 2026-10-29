@@ -1,0 +1,1 @@
+sudo pacman -S network-manager-applet pasystray xfce4-power-manager blueman udiskie

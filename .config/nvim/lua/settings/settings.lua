@@ -26,7 +26,7 @@ vim.opt.lcs = 'space:·'
 vim.o.background = 'dark'
 vim.opt.wildmenu = true 
 vim.opt.wildmode = "longest:longest,full"
-
+vim.opt.modeline = false
 
 vim.cmd([[
     filetype plugin indent on 

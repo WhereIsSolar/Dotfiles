@@ -16,32 +16,54 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq package-enable-at-startup nil)
-
 ;; no welcome screen
 (setq inhibit-startup-screen t)
+
+;; set up default directory and no backup
+(setq default-directory "~/")
+(setq make-backup-files nil)
 
 ;; Turn off unused menus
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+;;custom font
+(custom-set-faces
+ '(default ((t (:family "Liberation Mono" :foundry "1ASC" :slant normal :weight regular :height 170 :width normal)))))
+
+(put 'set-goal-column 'disabled nil)
+;; bootstrap margin and step distance by bottom or top
+(setq redisplay-dont-pause t
+      scroll-margin 5
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+
 ;; Frame transparency
 (set-frame-parameter (selected-frame) 'alpha '(70 80))
 (add-to-list 'default-frame-alist '(alpha . (95 95)))
 
-;; Включение Eglot для языков
+;; Cursor visibility
+(straight-use-package 'beacon)
+(beacon-mode 1)
+
+;; Autocompletion
+(straight-use-package 'company)
+(straight-use-package 'company-quickhelp)
+(require 'company)
+
+;; Eglot (LSP)
 (straight-use-package 'eglot)
 (use-package eglot
-  :ensure t
+  :straight t
   :hook
   ((c-mode . eglot-ensure)
-   (c++-mode . eglot-ensure)
-   (emacs-lisp-mode . eglot-ensure)))
+   (c++-mode . eglot-ensure)))
 ;; Включение семантической подсветки (требует Emacs 29+)
 (setq eglot-ignored-server-capabilities nil)
 
-
+;; Custom theme
 (use-package doom-themes
   :ensure t
   :straight t
@@ -63,12 +85,8 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-
-;;(load-theme 'leuven-dark)
-;; (load-theme 'modus-vivendi-deuteranopia)
-
-
 ;; Evil-mode PART ----------------------
+(setq evil-want-keybinding nil)
 (straight-use-package 'evil)
 (require 'evil)
 (evil-mode 1)
@@ -77,7 +95,7 @@
 (straight-use-package 'evil-surround)
 
 (use-package evil-commentary
- :straight
+ :straight t
  :config
  (evil-commentary-mode 1))
 
@@ -86,20 +104,21 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package evil-collection
+    :after evil
+    :straight t
+    :config (evil-collection-init))
+;; Evil-mode PART ----------------------
 
-;; Autocompletion
-(straight-use-package 'company)
-(straight-use-package 'company-quickhelp)
-(require 'company)
+(use-package which-key
+    :straight t
+    :config (which-key-mode))
 
-;; set up default directory and no backup
-(setq default-directory "~/")
-(setq make-backup-files nil)
+(use-package magit :straight t)
 
-;; Cursor visibility
-(straight-use-package 'beacon)
-(beacon-mode 1)
-
+(use-package rainbow-delimiters
+  :straight t
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;;for coding
 (defun print-to-file (filename data)
@@ -111,7 +130,6 @@
     (insert-file-contents filename)
     (cl-assert (eq (point) (point-min)))
     (read (current-buffer))))
-
 
 
 (defmacro make-enable-switch (switch-name &rest enable-expressions)
@@ -165,13 +183,6 @@
 (enable-go 't)
 (enable-org 't)
 
-(put 'set-goal-column 'disabled nil)
-;; bootstrap margin and step distance by bottom or top
-(setq redisplay-dont-pause t
-      scroll-margin 5
-      scroll-step 1
-      scroll-conservatively 10000
-      scroll-preserve-screen-position 1)
 
 ;;consult-ripgrep, consult-find
 
@@ -236,12 +247,6 @@ apps are not started from a shell."
      default))
  '(tool-bar-mode nil))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Liberation Mono" :foundry "1ASC" :slant normal :weight regular :height 170 :width normal)))))
 
 ;(set-face-attribute 'menu nil
 ;                    :inverse-video nil
@@ -262,24 +267,6 @@ apps are not started from a shell."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;DISABLED;;;;;;;;;;;;;;;;;;
-
-
-;; (straight-use-package 'doom-themes)
-;; (use-package doom-themes
-;;   :custom
-;;   ;; Global settings (defaults)
-;;   (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
-;;   (doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   ;; for treemacs users
-;;   ;;(doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-;;   :config
-;;   (load-theme 'doom-gruvbox t)
-
-;;   ;;(doom-themes-visual-bell-config);; Enable flashing mode-line on errors
-;;   ;;(doom-themes-neotree-config);; Enable custom neotree theme (nerd-icons must be installed!)
-;;   ;;(doom-themes-treemacs-config);; or for treemacs users
-;;   (doom-themes-org-config);; Corrects (and improves) org-mode's native fontification.
-;;   )
 
 
 
